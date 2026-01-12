@@ -1,0 +1,17 @@
+services:
+  postgres-db:
+    image: postgres:16-alpine # Versión estable y moderna
+    container_name: postgres_supermercado
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: 'market_db'
+      POSTGRES_USER: 'dev'
+      POSTGRES_PASSWORD: '123'
+    ports:
+      - "5432:5432"
+    volumes:
+      # Nota importante: La ruta interna en Postgres es diferente a MySQL
+      - postgres_data_market:/var/lib/postgresql/data
+
+volumes:
+  postgres_data_market:
