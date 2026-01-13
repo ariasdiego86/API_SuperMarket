@@ -16,7 +16,6 @@ public class VentaDTO {
     //Atributos que ya están en la clase Venta pero sin anotaciones de JPA
     private UUID id;
     private LocalDate date;
-    private BigDecimal total;
     private String status;
 
     //Atributos de las relaciones
@@ -24,6 +23,5 @@ public class VentaDTO {
 
     private List<DetalleVentaDTO> detalleVentaDto;
 
-
-
+    private BigDecimal total;
 }

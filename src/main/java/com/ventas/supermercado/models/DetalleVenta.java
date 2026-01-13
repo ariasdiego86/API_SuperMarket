@@ -20,14 +20,17 @@ public class DetalleVenta {
     //Relación con la tabla Venta, MUCHOS detalles de venta pueden pertenecer a UNA venta (ManyToOne) y UNA venta puede tener MUCHOS detalles de venta (OneToMany)
     /*También se puede ver como: UNA venta puede tener MUCHOS detalles de venta asociados y
      CADA (UN) detalle de venta solo puede pertenecer a UNA venta (mi proceso mental para armar el esquema en mi mente) */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ventaId") // Especifica el nombre de la columna de clave foránea
     private Venta venta;
 
     //Relación con la tabla Producto, MUCHOS detalles de venta pueden pertenecer a UN producto (ManyToOne) y UN producto puede tener MUCHOS detalles de venta (OneToMany)
     /*También se puede ver como: UN producto puede estar en MUCHOS detalles de venta, y
        CADA (UN) detalle de venta solo puede tener UN producto asociado (mi proceso mental)
     */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)// En las tablas hijas es mejor usar FetchType.LAZY para optimizar el rendimiento
+    //Ya que por lo general, no se necesita cargar los datos relacionados de las tablas padres
+    @JoinColumn(name = "productoId") // Especifica el nombre de la columna de clave foránea
     private Producto producto;
 
     private Integer cantProd;// cantidad de producto vendido

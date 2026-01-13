@@ -41,8 +41,22 @@ public class Venta {
      relación bidireccional, es decir poner OneToMany de un lado y del otro ManyToOne */
 
     //Tenemos que indicar con qué atributo de la clase DetalleVenta va mapeado, en este caso con el atributo "venta" en la clase DetalleVenta
-    @OneToMany(mappedBy = "venta")//el nombre "venta" tiene que coincidir exactamente con el nombre del atributo en DetalleVenta al que estamos mapeando
+    //el nombre "venta" tiene que coincidir exactamente con el nombre del atributo en DetalleVenta al que estamos mapeando
+    /*CascadaType.ALL para que al guardar una Venta se guarden automáticamente sus DetalleVenta asociados
+    y si se elimina una Venta se eliminen sus DetalleVenta asociados
+    (va en "cascada" si eliminamos el dato padre se eliminan los hijos asociados a este)*/
+    /*orphanRemoval = true: si hay algún registro huérfano (DetalleVenta sin Venta asociada) se elimina automáticamente
+        es decir si hay registro de tablas hijas que deberían estar asociados a registros de tablas padres que ya no existen, esos registros huérfanos se eliminan
+     */
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<DetalleVenta> detalleVenta = new ArrayList<>();
+
+    /*
+    * La diferencia entre FetchType.EAGER y FetchType.LAZY es que EAGER carga los datos relacionados inmediatamente al cargar la entidad principal,
+    * mientras que LAZY carga los datos relacionados solo cuando se accede a ellos por primera
+    * **/
     //El tipo de dato también debe ser el de la clase en donde se encuentra el campo "venta", en este caso DetalleVenta
+
+
 
 }
