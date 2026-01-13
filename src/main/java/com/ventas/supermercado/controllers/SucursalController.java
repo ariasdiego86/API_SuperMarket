@@ -24,7 +24,7 @@ public class SucursalController {
     }
 
     @PostMapping
-    public ResponseEntity<SucursalDTO> createSucursal (SucursalDTO sucursalDTO)
+    public ResponseEntity<SucursalDTO> createSucursal (@RequestBody SucursalDTO sucursalDTO)
     {
         SucursalDTO sucursal = sucursalService.createSucursal(sucursalDTO);
         return ResponseEntity.created(URI.create("/api/sucursales/" + sucursal.getId()))

@@ -30,8 +30,9 @@ public class VentaController {
     * **/
 
     @PostMapping
-    public ResponseEntity<VentaDTO> createVenta (VentaDTO ventaDTO)
+    public ResponseEntity<VentaDTO> createVenta (@RequestBody  VentaDTO ventaDTO)
     {
+        System.out.println("Suscursal ID recibida: " + ventaDTO.getSucursalId());
         VentaDTO venta = ventaService.createVenta(ventaDTO);
         return ResponseEntity.created(URI.create("/api/ventas/" + venta.getId()))
                 .body(venta);
