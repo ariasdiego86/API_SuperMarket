@@ -1,17 +1,59 @@
+version: '3.8'
+
+# ==============================================================================
+# ORQUESTACIÓN DE SERVICIOS (API + BASE DE DATOS)
+# ==============================================================================
+# Este archivo define y ejecuta la arquitectura completa del sistema:
+# 1. Base de Datos (PostgreSQL): Configurada con persistencia de datos (volumes)
+#    y un sistema de monitoreo de salud (healthcheck) para asegurar su disponibilidad.
+# 2. API (Spring Boot): Se construye desde el Dockerfile local, se conecta a la DB
+#    usando la red interna de Docker y espera automáticamente a que la DB esté
+#    100% saludable antes de iniciar para evitar errores de conexión.
+# ==============================================================================
 services:
+  # --- SERVICIO DE LA API SPRING BOOT ---
+  supermercado: #Nombre de la aplicación, tiene que ser el mismo que el application.properties
+    container_name: api_supermercado_container
+    build: . #Le ponemos solo un espacio y un punto para que tome el Dockerfile del mismo directorio, si no estuvieran en el mismo directorio habría que poner la ruta
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_URL=jdbc:postgresql://postgres-db:5432/market_db #ponemos el nombre del servicio (postgres-db) y no localhost
+      - DB_USER_NAME=dev # porque usamos docker-compose para levantar ambos servicios juntos
+      - DB_PASSWORD=123
+    depends_on:
+      postgres-db:
+        # AQUÍ ESTÁ LA MAGIA: Espera a que Postgres pase el test de salud
+        condition: service_healthy
+    restart: always
+    # Opcional: Limite de memoria para la API (Java consume mucho)
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+
+  # --- SERVICIO DE BASE DE DATOS POSTGRES ---
   postgres-db:
-    image: postgres:16-alpine # Versión estable y moderna
+    image: postgres:16-alpine
     container_name: postgres_supermercado
     restart: unless-stopped
     environment:
-      POSTGRES_DB: 'market_db'
-      POSTGRES_USER: 'dev'
-      POSTGRES_PASSWORD: '123'
+      POSTGRES_DB: market_db
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: 123
     ports:
       - "5432:5432"
     volumes:
-      # Nota importante: La ruta interna en Postgres es diferente a MySQL
       - postgres_data_market:/var/lib/postgresql/data
+
+    # --- HEALTHCHECK ADAPTADO A POSTGRES ---
+    healthcheck:
+      # pg_isready comprueba si el servidor acepta conexiones
+      # -U dev es el usuario que definiste arriba
+      test: ["CMD-SHELL", "pg_isready -U dev -d market_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data_market:

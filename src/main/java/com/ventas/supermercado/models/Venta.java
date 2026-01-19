@@ -52,6 +52,16 @@ public class Venta {
     private List<DetalleVenta> detalleVenta = new ArrayList<>();
 
     /*
+    * Antes de poner CascadeType.ALL estaba el problema de que al guardar una Venta el array DetalleVenta,
+    * O sea los registros de DetalleVenta asociados a esa Venta no se guardaban automáticamente en la base de datos
+    * y ahora con CascadeType.ALL JPA sabe que tiene que propagar la operación de guardado a los DetalleVenta asociados.
+    *
+    * JPA interpreta: "Cuando hagas CUALQUIER operación en Venta (save, update, delete, etc.), propágala automáticamente
+    * * a todos los DetalleVenta asociados"
+    * *
+    * **/
+
+    /*
     * La diferencia entre FetchType.EAGER y FetchType.LAZY es que EAGER carga los datos relacionados inmediatamente al cargar la entidad principal,
     * mientras que LAZY carga los datos relacionados solo cuando se accede a ellos por primera
     * **/
