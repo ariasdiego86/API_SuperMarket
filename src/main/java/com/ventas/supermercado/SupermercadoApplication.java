@@ -25,8 +25,8 @@ public class SupermercadoApplication {
          * pero contenía tildes (caracteres especiales). El plugin 'maven-resources-plugin'
          * intentó leerlo como UTF-8 y falló al encontrar los bytes de las tildes.
          * SOLUCIÓN APLICADA:
-         * 1. Configurar IntelliJ: Settings -> File Encodings -> Todo a UTF-8.
-         * 2. Borrar y recrear application.properties para asegurar que se guarde en UTF-8.
+         * 1. Configurar IntelliJ: Settings -> File Encodings -> Todo a UTF-8. ctrl + alt + s
+         * 2. Borrar y volver a crear application.properties para asegurar que se guarde en UTF-8.
          * 3. Agregar <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> en pom.xml.
          * -----------------------------------------------------------------------------
          */

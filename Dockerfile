@@ -1,7 +1,10 @@
 # 1. IMAGEN BASE
 # Usamos OpenJDK 17 en su versión "slim" (ligera) para reducir el tamaño final de la imagen.
 # Esto asegura que tengamos el entorno de ejecución de Java necesario para Spring Boot 3.
-FROM openjdk:21-jdk-slim
+# FROM openjdk:21-jdk-slim // da este error: => ERROR [internal] load metadata for docker.io/library/openjdk:21-jdk-slim
+# Porque openjdk:21-jdk-slim no existe en Docker Hub
+#Siempre que hagamos cambios en el Dockerfile, debemos darle clean y install a Maven para que regenere el .jar
+FROM eclipse-temurin:21-jdk-alpine
 
 # 2. VARIABLE DEL JAR
 # Definimos una variable que apunta a donde Maven genera el .jar compilado.
