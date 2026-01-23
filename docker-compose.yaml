@@ -36,7 +36,7 @@ services:
   postgres-db:
     image: postgres:16-alpine
     container_name: postgres_supermercado
-    restart: unless-stopped
+    restart: no
     environment:
       POSTGRES_DB: market_db
       POSTGRES_USER: dev
