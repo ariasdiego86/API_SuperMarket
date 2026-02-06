@@ -25,7 +25,7 @@ services:
       postgres-db:
         # AQUÍ ESTÁ LA MAGIA: Espera a que Postgres pase el test de salud
         condition: service_healthy
-    restart: always
+    restart: no # Reinicio deshabilitado para desarrollo, pero para producción se recomienda "always"
     # Opcional: Limite de memoria para la API (Java consume mucho)
     deploy:
       resources:
